@@ -4,7 +4,7 @@ from flask_restful import Api
 import config
 
 def create_app(config_name):
-    '''Method to create a flask app depending on the configuration passed'''
+    '''Function to create a flask app depending on the configuration passed'''
 
     app = Flask(__name__)
     api=Api(app)
