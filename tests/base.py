@@ -8,7 +8,7 @@ LOGIN_URL = '/api/v1/user/login'
 
 class BaseTestClass(TestCase):
     '''Base class with setup for tests'''
-
+    
     def setUp(self):
         conn = connect_to_db('testing')
         conn.set_session(autocommit=True)
@@ -86,5 +86,9 @@ class BaseTestClass(TestCase):
                 FOREIGN KEY (user_id) REFERENCES users (id));""")
 
     def tearDown(self):
-        pass
+        conn = connect_to_db('testing')
+        cur = conn.cursor()
+        cur.close()
+        conn.commit()
+        conn.close()
         
