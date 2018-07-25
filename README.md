@@ -72,6 +72,6 @@ To run tests:
 
  $ pytest
  
-To run the app on Postman:
+To run the app:
 
  $ Python run.py
