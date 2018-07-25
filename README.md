@@ -66,7 +66,12 @@ Activate the virtualenv:
 Install the requirements of the project:
 
  $ pip install -r requirements.txt
- 
+
+Create two databases, one for testing environment and one for development envronnment,as follows:
+
+  $ createdb diary
+  
+  $ createdb testdb
 
 To run tests:
 
