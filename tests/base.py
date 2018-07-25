@@ -85,10 +85,10 @@ class BaseTestClass(TestCase):
                 PRIMARY KEY (user_id , id),
                 FOREIGN KEY (user_id) REFERENCES users (id));""")
 
-    def tearDown(self):
-        conn = connect_to_db('testing')
-        cur = conn.cursor()
-        cur.close()
-        conn.commit()
-        conn.close()
+def tearDown(self):
+    conn = connect_to_db('testing')
+    cur = conn.cursor()
+    cur.close()
+    conn.commit()
+    conn.close()
         
