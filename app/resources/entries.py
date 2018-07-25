@@ -36,3 +36,22 @@ class EntryResource(Resource):
         user_entries = Entry.get(user_id=user_id)
         return {'message': 'Entries found', 'entries': [Entry.entry_dict(entry)
          for entry in user_entries]}, 200
+
+    @token_required
+    def put(self,user_id, entry_id):
+        entry = Entry.get(user_id=user_id, entry_id=entry_id)
+        if not entry:
+            return {"message": "Entry does not exist"}, 404 
+        post_data = request.get_json()
+        title = post_data.get('title', None)
+        description = post_data.get('description', None)
+        data = {}
+        if title:
+            data.update({'title': title})
+        if description:
+            data.update({'description': description})
+        
+        Entry.update(table='entries',id=entry[0], data=data)
+        entry = Entry.get(user_id=user_id, entry_id=entry_id)
+        return {'message': 'Entry updated successfully', 
+        'new_entry': Entry.entry_dict(entry)}, 200
