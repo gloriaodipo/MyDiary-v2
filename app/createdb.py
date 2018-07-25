@@ -2,7 +2,7 @@ import os
 from psycopg2 import connect
 
 def connect_to_db(config=None):
-    ''' Method to create a connection to the right database'''
+    ''' Function to create a connection to the right database'''
     if config=='testing':
         db_name = os.getenv('TEST_DB')
     else:
@@ -20,7 +20,7 @@ def connect_to_db(config=None):
         )
 
 def create_users_table(cur):
-    '''Method to create a table for users'''
+    '''Fuction to create a table for users'''
     cur.execute(
         """CREATE TABLE users(
             id serial PRIMARY KEY,
@@ -29,7 +29,7 @@ def create_users_table(cur):
             password VARCHAR NOT NULL);""")
 
 def create_entries_table(cur):
-    '''Method to create a table for entries'''
+    '''Function to create a table for entries'''
     cur.execute(
         """CREATE TABLE entries(
             id serial,
