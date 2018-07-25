@@ -124,13 +124,15 @@ class Entry(Base):
 
     def add(self):
         '''Method for adding input into entries table'''
-        cur.execute(
-            """
-            INSERT INTO entries (user_id, title, description, created_at, last_modified)
-            VALUES (%s , %s, %s, %s, %s)
-            """,
-            (self.user_id, self.title, self.description, self.created_at, self.last_modified))
-        
+        try:
+            cur.execute(
+                """
+                INSERT INTO entries (user_id, title, description, created_at, last_modified)
+                VALUES (%s , %s, %s, %s, %s)
+                """,
+                (self.user_id, self.title, self.description, self.created_at, self.last_modified))
+        except (Exception, psycopg2.IntegrityError) as e:
+            p.pprint(e)
         self.save()
     
     @staticmethod

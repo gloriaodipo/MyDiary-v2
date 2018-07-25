@@ -13,8 +13,10 @@ class Test_Entry_Case(BaseTestClass):
     def test_add_entry(self):
         '''Test API can add entry made by logged in user'''
         response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
 
-        response = self.client.post(ADD_ENTRY_URL,
+        response = self.client.post(ADD_ENTRY_URL,headers=headers,
             data = json.dumps(self.entry_data), content_type = 'application/json')
         result = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 201)
@@ -23,12 +25,14 @@ class Test_Entry_Case(BaseTestClass):
     def test_get_single_entry(self):
         '''Test API can get a single diary entry'''
         response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
 
-        response = self.client.post(ADD_ENTRY_URL,
+        response = self.client.post(ADD_ENTRY_URL, headers=headers,
             data = json.dumps(self.entry_data), content_type = 'application/json')
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.get (GET_SINGLE_URL,
+        response = self.client.get (GET_SINGLE_URL, headers=headers,
             content_type = 'application/json')
         result = json.loads(response.data.decode())
         self.assertEqual(response.status_code, 200)
@@ -37,12 +41,14 @@ class Test_Entry_Case(BaseTestClass):
     def test_get_all_entries(self):
         '''Test API can get all diary entries'''
         response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
 
-        response = self.client.post(ADD_ENTRY_URL,
+        response = self.client.post(ADD_ENTRY_URL, headers=headers,
             data = json.dumps(self.entry_data), content_type = 'application/json')
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.get(GET_ALL_URL,
+        response = self.client.get(GET_ALL_URL, headers=headers,
             content_type = 'application/json')
         entries = self.entry_model.get(user_id=1)
         entries = [self.entry_model.entry_dict(entry) for entry in entries]
@@ -54,24 +60,28 @@ class Test_Entry_Case(BaseTestClass):
     def test_delete_entry(self):
         '''Test API can delete a diary entry'''
         response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
 
-        response = self.client.post(ADD_ENTRY_URL,
+        response = self.client.post(ADD_ENTRY_URL, headers=headers,
             data = json.dumps(self.entry_data), content_type = 'application/json')
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.delete(DELETE_URL,
+        response = self.client.delete(DELETE_URL, headers=headers,
         data = json.dumps(self.entry_data), content_type = 'application/json')
         self.assertEqual(response.status_code, 200)
 
     def test_modify_entry(self):
         '''Test API can modify a diary entry'''
         response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
 
-        response = self.client.post(ADD_ENTRY_URL,
+        response = self.client.post(ADD_ENTRY_URL, headers=headers,
             data = json.dumps(self.entry_data), content_type = 'application/json')
         self.assertEqual(response.status_code, 201)
 
-        response = self.client.put(MODIFY_URL,
+        response = self.client.put(MODIFY_URL, headers=headers,
             data = json.dumps(dict(title="Modified title")),content_type = ("application/json"))
         self.assertEqual(response.status_code, 200)
         result = json.loads(response.data.decode())
