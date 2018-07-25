@@ -53,13 +53,6 @@ Install virtualenv:
 
  $ pip install virtualenv
 
-To run tests:
- $ pytest
- 
-To run the app on Postman:
- $ Python run.py
- 
-
 Create a virtual environment in the root directory:
 
  $ virtualenv -name of virtualenv-
@@ -75,3 +68,12 @@ Activate the virtualenv:
 Install the requirements of the project:
 
  $ pip install -r requirements.txt
+ 
+
+To run tests:
+
+ $ pytest
+ 
+To run the app on Postman:
+
+ $ Python run.py
