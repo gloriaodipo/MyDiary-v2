@@ -1,12 +1,18 @@
 # MyDiary-v2
 MyDiary is an online journal where users can pen down their thoughts and feelings.
 
+[![Build Status](https://travis-ci.org/gloriaodipo/MyDiary-v2.svg?branch=develop)](https://travis-ci.org/gloriaodipo/MyDiary-v2) [![Coverage Status](https://coveralls.io/repos/github/gloriaodipo/MyDiary-v2/badge.svg?branch=develop)](https://coveralls.io/github/gloriaodipo/MyDiary-v2?branch=develop)
+
 ### Prerequisites
 
-- [Python 3.6](https://www.python.org/downloads/release/python-360/)
-- [Virtual Environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/)
-- [Flask](http://flask.pocoo.org/)
-- [Flask-RESTful](https://flask-restful.readthedocs.io/en/latest/)
+- [Python 3.6](https://www.python.org/downloads/release/python-360/) (A programming language)
+- [Virtual Environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/) (Stores all dependencies used in the project)
+- [POstgreSQL](https://www.postgresql.org/docs/10/static/intro-whatis.html)(Database)
+
+### Other technologies used:
+- Flask_restful
+
+- Psycopg2
 
 ### Endpoints
 
