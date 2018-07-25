@@ -4,7 +4,6 @@ from .base import BaseTestClass, SIGNUP_URL, LOGIN_URL
 
 class Test_User_Case(BaseTestClass):
     '''User test cases'''    
-
     def test_signup(self):
         """Test API can successfully register a new user (POST request)"""
         response = self.client.post(SIGNUP_URL,

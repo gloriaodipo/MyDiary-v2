@@ -4,7 +4,7 @@ class TestModels(BaseTestClass):
     '''Class for models test cases'''
 
     def test_can_create_user(self):
-        '''Test successful user creation'''
+        '''Test successful account creation for user'''
         self.user1.add()
         u = self.user_model.get('users', username=self.user1.username)
         self.assertEqual(u[1], self.user1.username)

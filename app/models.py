@@ -1,8 +1,11 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+import os
+import psycopg2
+import jwt
+import pprint as p
 from psycopg2 import connect
 from flask import current_app
-import os
 from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from .createdb import connect_to_db
 
@@ -45,13 +48,15 @@ class Base():
         sql = 'DELETE FROM {} WHERE id={}'.format(table, id)
         cur.execute(sql)
         conn.commit()
+        
 
     def close(self):
         cur.close()
         conn.close() 
     
+
 class User(Base):
-    '''Class to model user'''
+    '''Class to model the user'''
     def __init__(self, username, email, password):
         '''Initialize user variables'''
         self.username = username
@@ -59,16 +64,20 @@ class User(Base):
         self.password = generate_password_hash(password)
 
     def add(self):
-        cur.execute(
-            """
-            INSERT INTO users (username, email, password)
-            VALUES (%s , %s, %s)
-            """,
-            (self.username, self.email, self.password))
+        '''Method for adding input into users table'''
+        try:
+            cur.execute(
+                """
+                INSERT INTO users(username, email, password)
+                VALUES(%s,%s,%s)""",
+                (self.username, self.email, self.password))
+        except (Exception, psycopg2.IntegrityError) as e:
+            p.pprint(e)
         self.save()
     
     @staticmethod
     def user_dict(user):
+        '''Method for returning user details'''
         return dict(
             id=user[0],
             username=user[1],
@@ -77,13 +86,33 @@ class User(Base):
 
     @staticmethod
     def validate_password(password, username):
+        '''Method for validating password input'''
         user = User.get('users', username=username)
         if check_password_hash(user[3], password):
             return True
         return False
+    
+    @staticmethod
+    def generate_token(user):
+        '''Method for generating a token upon login'''
+        user_id, username = user[0], user[1]
+        payload = {
+            'user_id': user_id,
+            'username': username,
+            'exp': datetime.utcnow()+timedelta(minutes=6000),
+            'iat': datetime.utcnow()}
+        token = jwt.encode(payload, str(current_app.config.get('SECRET')), algorithm='HS256')
+        return token.decode()
+    
+    @staticmethod
+    def decode_token(token):
+        '''Method for decoding generated token'''
+        payload = jwt.decode(token, str(current_app.config.get('SECRET')), algorithms=['HS256'])
+        return payload
+
 
 class Entry(Base):
-    '''Class to model entry'''
+    '''Class to model the entry'''
 
     def __init__(self, title, description, user_id):
         '''Initialize entry variables'''
@@ -94,6 +123,7 @@ class Entry(Base):
         self.last_modified = datetime.utcnow().isoformat()
 
     def add(self):
+        '''Method for adding input into entries table'''
         cur.execute(
             """
             INSERT INTO entries (user_id, title, description, created_at, last_modified)
@@ -105,6 +135,7 @@ class Entry(Base):
     
     @staticmethod
     def get(user_id, entry_id=None):
+        '''Method for fetching both single and all entries'''
         if entry_id:
             cur.execute("""SELECT * FROM entries WHERE user_id={} AND id={}""".format(user_id, entry_id))
             return cur.fetchone()
@@ -123,6 +154,7 @@ class Entry(Base):
 
     @staticmethod  
     def entry_dict(entry):
+        '''Method for returning entry details'''
         return dict(
             id=entry[0],
             user_id=entry[1],
