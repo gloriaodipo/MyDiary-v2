@@ -27,6 +27,7 @@ class EntryResource(Resource):
 
     @token_required
     def get(self, user_id, entry_id=None):
+        '''Methofd for getting both single and all entries'''
         if entry_id:
             user_entry = Entry.get(user_id=user_id, entry_id=entry_id)
             if user_entry:
@@ -39,6 +40,7 @@ class EntryResource(Resource):
 
     @token_required
     def put(self,user_id, entry_id):
+        '''Method for modifying an entry'''
         entry = Entry.get(user_id=user_id, entry_id=entry_id)
         if not entry:
             return {"message": "Entry does not exist"}, 404 
@@ -55,3 +57,13 @@ class EntryResource(Resource):
         entry = Entry.get(user_id=user_id, entry_id=entry_id)
         return {'message': 'Entry updated successfully', 
         'new_entry': Entry.entry_dict(entry)}, 200
+
+    @token_required
+    def delete(self, user_id, entry_id):
+        '''Method for deleting an entry'''
+        user_entry = Entry.get(user_id=user_id, entry_id=entry_id)
+        if user_entry:
+            Entry.delete(table='entries',id=user_entry[0])
+            return {"message": "Entry has been deleted"}, 200
+        return {"message": "Entry does not exist"}, 404 
+
