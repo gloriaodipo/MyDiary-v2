@@ -20,15 +20,15 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 ### Endpoints
 
-| METHOD | ENDPOINT                                      | DESCRIPTION                      |
-| ------ | --------------------------------------------- | -------------------------------- |
-| POST   | /api/v1/user/signup/                          | User registration                |
-| POST   | /api/v1/user/login/                           | Login signed up user             |
-| POST   | /api/v1/user/entries/                         | Create a new entry               |
-| GET    | /api/v1/user/entries/<int:entry_id>/          | Fetch a single entry             |
-| GET    | /api/v1/user/entries/                         | Fetch all entries                |
-| PUT    | /api/v1/user/entries/<int:entry_id>/          | Modify an entry                  |
-| DELETE | /api/v1/user/entries/<int:entry_id>/          | Delete an entry                  |
+| METHOD | ENDPOINT                                        | DESCRIPTION                      |
+| ------ | ---------------------------------------------   | -------------------------------- |
+| POST   | '/api/v1/user/signup'                           | User registration                |
+| POST   | '/api/v1/user/login '                           | Login signed up user             |
+| POST   | '/api/v1/user/entries '                         | Create a new entry               |
+| GET    | '/api/v1/user/entries/<int:entry_id>'           | Fetch a single entry             |
+| GET    | '/api/v1/user/entries'                          | Fetch all entries                |
+| PUT    | '/api/v1/user/entries/<int:entry_id>'           | Modify an entry                  |
+| DELETE | '/api/v1/user/entries/<int:entry_id>'           | Delete an entry                  |
 
 
 ## Getting Started:
