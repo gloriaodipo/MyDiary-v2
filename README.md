@@ -5,9 +5,13 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 ### Prerequisites
 
-- [Python 3.6](https://www.python.org/downloads/release/python-360/) (A programming language)
-- [Virtual Environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/) (Stores all dependencies used in the project)
-- [POstgreSQL](https://www.postgresql.org/docs/10/static/intro-whatis.html)(Database)
+## Prerequisites
+- [Python3](https://www.python.org/) (A programming language)
+- [Flask](http://flask.pocoo.org/) (A Python microframework)
+- [PostgreSQL](https://www.postgresql.org/docs/10/static/intro-whatis.html) (Database)
+- [Virtualenv](https://virtualenv.pypa.io/en/stable/) (Stores all dependencies used in the project)
+- [Pivotal Tracker](www.pivotaltracker.com) (A project management tool)
+- [Pytest](https://docs.pytest.org/en/latest/) (Framework for testing)
 
 ### Other technologies used:
 - Flask_restful
@@ -25,16 +29,6 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 | GET    | /api/v1/user/entries/                         | Fetch all entries                |
 | PUT    | /api/v1/user/entries/<int:entry_id>/          | Modify an entry                  |
 | DELETE | /api/v1/user/entries/<int:entry_id>/          | Delete an entry                  |
-
-## Prerequisites
-
-## Prerequisites
-- [Python3](https://www.python.org/) (A programming language)
-- [Flask](http://flask.pocoo.org/) (A Python microframework)
-- [PostgreSQL](https://www.postgresql.org/docs/10/static/intro-whatis.html) (Database)
-- [Virtualenv](https://virtualenv.pypa.io/en/stable/) (Stores all dependencies used in the project)
-- [Pivotal Tracker](www.pivotaltracker.com) (A project management tool)
-- [Pytest](https://docs.pytest.org/en/latest/) (Framework for testing)
 
 
 ## Getting Started:
