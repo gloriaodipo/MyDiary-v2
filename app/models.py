@@ -1,11 +1,12 @@
-from werkzeug.security import generate_password_hash, check_password_hash
-from psycopg2 import connect
-from flask import current_app
 import os
 import psycopg2
-import pprint as p
-from datetime import datetime, timedelta
 import jwt
+import pprint as p
+from psycopg2 import connect
+from flask import current_app
+from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from .createdb import connect_to_db
 
 conn = connect_to_db(current_app.config.get('APP_SETTINGS'))
