@@ -3,8 +3,6 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 [![Build Status](https://travis-ci.org/gloriaodipo/MyDiary-v2.svg?branch=develop)](https://travis-ci.org/gloriaodipo/MyDiary-v2) [![Coverage Status](https://coveralls.io/repos/github/gloriaodipo/MyDiary-v2/badge.svg?branch=develop)](https://coveralls.io/github/gloriaodipo/MyDiary-v2?branch=develop)
 
-### Prerequisites
-
 ## Prerequisites
 - [Python3](https://www.python.org/) (A programming language)
 - [Flask](http://flask.pocoo.org/) (A Python microframework)
