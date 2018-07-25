@@ -15,7 +15,7 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 ### Other technologies used:
 - Flask_restful
-
+- Postman
 - Psycopg2
 
 ### Endpoints
@@ -52,6 +52,13 @@ Get into the root directory:
 Install virtualenv:
 
  $ pip install virtualenv
+
+To run tests:
+ $ pytest
+ 
+To run the app on Postman:
+ $ Python run.py
+ 
 
 Create a virtual environment in the root directory:
 
