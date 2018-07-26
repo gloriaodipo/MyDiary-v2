@@ -1,7 +1,7 @@
 # MyDiary-v2
 MyDiary is an online journal where users can pen down their thoughts and feelings.
 
-[![Build Status](https://travis-ci.org/gloriaodipo/MyDiary-v2.svg?branch=develop)](https://travis-ci.org/gloriaodipo/MyDiary-v2) [![Coverage Status](https://coveralls.io/repos/github/gloriaodipo/MyDiary-v2/badge.svg?branch=develop)](https://coveralls.io/github/gloriaodipo/MyDiary-v2?branch=develop)
+[![Build Status](https://travis-ci.org/gloriaodipo/MyDiary-v2.svg?branch=develop)](https://travis-ci.org/gloriaodipo/MyDiary-v2) [![Coverage Status](https://coveralls.io/repos/github/gloriaodipo/MyDiary-v2/badge.svg?branch=develop)](https://coveralls.io/github/gloriaodipo/MyDiary-v2?branch=develop) [![Maintainability](https://api.codeclimate.com/v1/badges/09171439fed2d327b6f9/maintainability)](https://codeclimate.com/github/gloriaodipo/MyDiary-v2/maintainability)
 
 ## Prerequisites
 - [Python3](https://www.python.org/) (A programming language)
