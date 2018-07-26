@@ -16,10 +16,7 @@ cur = conn.cursor()
 class Base():
     '''Base class to set up database'''       
     def save(self):
-        try:
-            conn.commit()
-        except Exception as e:
-            raise e
+        conn.commit()
     
     @staticmethod
     def get(table_name, **kwargs):
@@ -48,13 +45,7 @@ class Base():
         sql = 'DELETE FROM {} WHERE id={}'.format(table, id)
         cur.execute(sql)
         conn.commit()
-        
-
-    def close(self):
-        cur.close()
-        conn.close() 
     
-
 class User(Base):
     '''Class to model the user'''
     def __init__(self, username, email, password):
@@ -65,14 +56,11 @@ class User(Base):
 
     def add(self):
         '''Method for adding input into users table'''
-        try:
-            cur.execute(
-                """
-                INSERT INTO users(username, email, password)
-                VALUES(%s,%s,%s)""",
-                (self.username, self.email, self.password))
-        except (Exception, psycopg2.IntegrityError) as e:
-            p.pprint(e)
+        cur.execute(
+            """
+            INSERT INTO users(username, email, password)
+            VALUES(%s,%s,%s)""",
+            (self.username, self.email, self.password))
         self.save()
     
     @staticmethod
@@ -124,15 +112,12 @@ class Entry(Base):
 
     def add(self):
         '''Method for adding input into entries table'''
-        try:
-            cur.execute(
-                """
-                INSERT INTO entries (user_id, title, description, created_at, last_modified)
-                VALUES (%s , %s, %s, %s, %s)
-                """,
-                (self.user_id, self.title, self.description, self.created_at, self.last_modified))
-        except (Exception, psycopg2.IntegrityError) as e:
-            p.pprint(e)
+        cur.execute(
+            """
+            INSERT INTO entries (user_id, title, description, created_at, last_modified)
+            VALUES (%s , %s, %s, %s, %s)
+            """,
+            (self.user_id, self.title, self.description, self.created_at, self.last_modified))
         self.save()
     
     @staticmethod

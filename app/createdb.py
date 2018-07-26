@@ -43,6 +43,7 @@ def create_entries_table(cur):
 
 def main(config=None):
     conn = connect_to_db(config=config)
+    conn.set_session(autocommit=True)
     cur = conn.cursor()
     cur.execute("""DROP TABLE IF EXISTS users CASCADE""" )
     cur.execute("""DROP TABLE IF EXISTS entries CASCADE""" )

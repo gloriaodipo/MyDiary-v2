@@ -21,8 +21,8 @@ class SignupResource(Resource):
         email = args.get('email')
 
         email_format = re.compile(
-        r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[a-zA-Z-]+$)")
-        username_format = re.compile(r"(^[A-Za-z]+$)")
+        r"(^[a-zA-Z0-9_.-]+@[a-zA-Z-]+\.[.a-zA-Z-]+$)")
+        username_format = re.compile(r"(^[A-Za-z0-9-]+$)")
 
         if not (re.match(username_format, username)):
             return {'message' : 'Invalid username'}, 400

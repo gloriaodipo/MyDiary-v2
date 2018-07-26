@@ -1,6 +1,6 @@
 import json
 from unittest import TestCase
-from app.createdb import connect_to_db
+from app.createdb import main, connect_to_db
 from app import create_app
 
 SIGNUP_URL = '/api/v1/user/signup'
@@ -10,15 +10,7 @@ class BaseTestClass(TestCase):
     '''Base class with setup for tests'''
     
     def setUp(self):
-        conn = connect_to_db('testing')
-        conn.set_session(autocommit=True)
-        cur = conn.cursor()
-
-        cur.execute("""DROP TABLE IF EXISTS users CASCADE""" )
-        cur.execute("""DROP TABLE IF EXISTS entries CASCADE""" )
-
-        self.create_users_table(cur)
-        self.create_entries_table(cur)
+        main('testing')
         
         self.app = create_app('testing')
         with self.app.app_context():
@@ -64,30 +56,13 @@ class BaseTestClass(TestCase):
         content_type='application/json')
         
         return res
-    
-    def create_users_table(self, cur):
-        cur.execute(
-            """CREATE TABLE users(
-                id serial PRIMARY KEY,
-                username VARCHAR NOT NULL UNIQUE,
-                email VARCHAR NOT NULL UNIQUE,
-                password VARCHAR NOT NULL);""")
-    
-    def create_entries_table(self, cur):
-        cur.execute(
-            """CREATE TABLE entries(
-                id serial,
-                user_id INTEGER NOT NULL,
-                title VARCHAR NOT NULL,
-                description VARCHAR NOT NULL,
-                created_at timestamp NOT NULL,
-                last_modified timestamp NOT NULL,
-                PRIMARY KEY (user_id , id),
-                FOREIGN KEY (user_id) REFERENCES users (id));""")
 
 def tearDown(self):
     conn = connect_to_db('testing')
     cur = conn.cursor()
+    cur.execute("""DROP TABLE IF EXISTS users CASCADE""" )
+    cur.execute("""DROP TABLE IF EXISTS entries CASCADE""" )
+
     cur.close()
     conn.commit()
     conn.close()
