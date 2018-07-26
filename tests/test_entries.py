@@ -22,22 +22,6 @@ class Test_Entry_Case(BaseTestClass):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(result["message"], "Entry has been published")
 
-    def test_get_single_entry(self):
-        '''Test API can get a single diary entry'''
-        response = self.logged_in_user()
-        token = json.loads(response.data.decode('utf-8'))['token']
-        headers = {'Authorization': 'Bearer {}'.format(token)}
-
-        response = self.client.post(ADD_ENTRY_URL, headers=headers,
-            data = json.dumps(self.entry_data), content_type = 'application/json')
-        self.assertEqual(response.status_code, 201)
-
-        response = self.client.get (GET_SINGLE_URL, headers=headers,
-            content_type = 'application/json')
-        result = json.loads(response.data.decode())
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(result["message"], "Entry found")
-
     def test_get_all_entries(self):
         '''Test API can get all diary entries'''
         response = self.logged_in_user()
@@ -116,3 +100,77 @@ class Test_Entry_Case(BaseTestClass):
         response = self.client.get(GET_ALL_URL,
         data = json.dumps(self.entry_data), content_type = 'application/json')
         self.assertEqual(response.status_code, 401)
+
+    def test_cannot_add_entry_with_blank_title(self):
+        '''Test API cannot add entry made with a blank title'''
+        response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = self.client.post(ADD_ENTRY_URL,headers=headers,
+            data = json.dumps({'title': ' ', 'description': 'Some random description'}), 
+                content_type = 'application/json')
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(result["message"], "All fields are required")
+
+    def test_cannot_add_entry_with_blank_description(self):
+        '''Test API cannot add entry made with a blank description'''
+        response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = self.client.post(ADD_ENTRY_URL,headers=headers,
+            data = json.dumps({'title': 'title', 'description': ' '}),
+             content_type = 'application/json')
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(result["message"], "All fields are required")
+
+    def test_cannot_get_all_entries_if_unavailable(self):
+        '''Test API cannot get all diary entries if they don't exist'''
+        response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = self.client.get(GET_ALL_URL, headers=headers,
+            content_type = 'application/json')
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(result["message"], "No entries available")
+
+    def test_cannot_get_single_entry_if_unavailable(self):
+        '''Test API cannot get a single diary entry if it does not exist'''
+        response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = self.client.get (GET_SINGLE_URL, headers=headers,
+            content_type = 'application/json')
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(result["message"], "Entry not found")  
+
+    def test_cannot_delete_unavailable_entry(self):
+        '''Test API cannot delete an unavailable entry'''
+        response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = self.client.delete(DELETE_URL, headers=headers,
+        data = json.dumps(self.entry_data), content_type = 'application/json')
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(result["message"], "Entry does not exist")  
+
+    def test_cannot_modify_unavailable_entry(self):
+        '''Test API cannot modify an unavailable entry'''
+        response = self.logged_in_user()
+        token = json.loads(response.data.decode('utf-8'))['token']
+        headers = {'Authorization': 'Bearer {}'.format(token)}
+
+        response = self.client.put(MODIFY_URL, headers=headers,
+            data = json.dumps(dict(title="Modified title")),content_type = ("application/json"))
+        result = json.loads(response.data.decode())
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(result["message"], "Entry does not exist")
