@@ -35,8 +35,7 @@ class EntryResource(Resource):
             else:
                 return {'message': 'Entry not found'}, 404
         user_entries = Entry.get(user_id=user_id)
-        return {'message': 'Entries found', 'entries': [Entry.entry_dict(entry)
-         for entry in user_entries]}, 200
+        return {'message': 'Entries found', 'entries': [Entry.entry_dict(entry) for entry in user_entries]}, 200
 
     @token_required
     def put(self,user_id, entry_id):
