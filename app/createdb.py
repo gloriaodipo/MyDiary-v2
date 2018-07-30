@@ -1,24 +1,25 @@
 import os
+from urllib.parse import urlparse
 from psycopg2 import connect
 
 def connect_to_db(config=None):
     ''' Function to create a connection to the right database'''
     if config=='testing':
-        db_name = os.getenv('TEST_DB')
+        DATABASE_URL = os.getenv('TEST_DB_URL')
     else:
-        db_name = os.getenv('DB_NAME')
-    
-    host = os.getenv('DB_HOST')
-    user = os.getenv('DB_USERNAME')
-    password = os.getenv('DB_PASSWORD')
+        DATABASE_URL = os.getenv('DB_URL')
 
+    result = urlparse(DATABASE_URL)
+    username = result.username
+    password = result.password
+    database = result.path[1:]
+    hostname = result.hostname
     return connect(
-        database=db_name,
-        host=host,
-        user=user,
-        password=password
-        )
-
+        database = database,
+        user = username,
+        password = password,
+        host = hostname
+    )
 def create_users_table(cur):
     '''Fuction to create a table for users'''
     cur.execute(
