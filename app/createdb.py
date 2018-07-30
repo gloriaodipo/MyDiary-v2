@@ -1,5 +1,4 @@
 import os
-from urllib.parse import urlparse
 from psycopg2 import connect
 
 def connect_to_db(config=None):

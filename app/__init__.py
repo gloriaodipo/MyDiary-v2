@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 
 import config
 
@@ -8,7 +9,7 @@ def create_app(config_name):
 
     app = Flask(__name__)
     api=Api(app)
-
+    CORS(app)
     app.config.from_object(config.app_config[config_name])
 
     with app.app_context():
