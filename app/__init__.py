@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import Api
 from flask_cors import CORS
 
@@ -20,4 +20,7 @@ def create_app(config_name):
     api.add_resource(LoginResource, '/api/v1/user/login')
     api.add_resource(EntryResource, '/api/v1/user/entries', '/api/v1/user/entries/<int:entry_id>')
 
+    @app.route("/")
+    def index():
+        return render_template("docs.html")
     return app
