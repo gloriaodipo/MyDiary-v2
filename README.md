@@ -16,7 +16,7 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 - Postman
 - Psycopg2
 
-**The API is hosted [here](https://mydiary-v2-app.herokuapp.com/)
+**The API is hosted [here](https://mydiary-v2-app.herokuapp.com/)**
 
 ### Endpoints
 
