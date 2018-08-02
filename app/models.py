@@ -13,25 +13,28 @@ conn = connect_to_db(current_app.config.get('APP_SETTINGS'))
 conn.set_session(autocommit=True)
 cur = conn.cursor()
 
+
 class Base():
-    '''Base class to set up database'''       
+    '''Base class to set up database'''
+
     def save(self):
         conn.commit()
-    
+
     @staticmethod
     def get(table_name, **kwargs):
         for key, val in kwargs.items():
-            sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val )
+            sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val)
             cur.execute(sql)
             item = cur.fetchone()
             return item
-    
+
     @staticmethod
     def get_all(table_name):
         sql = 'SELECT * FROM {}'.format(table_name)
         cur.execute(sql)
         data = cur.fetchall()
         return data
+
     @staticmethod
     def update(table, id, data):
         for key, val in data.items():
@@ -45,9 +48,11 @@ class Base():
         sql = 'DELETE FROM {} WHERE id={}'.format(table, id)
         cur.execute(sql)
         conn.commit()
-    
+
+
 class User(Base):
     '''Class to model the user'''
+
     def __init__(self, username, email, password):
         '''Initialize user variables'''
         self.username = username
@@ -62,7 +67,7 @@ class User(Base):
             VALUES(%s,%s,%s)""",
             (self.username, self.email, self.password))
         self.save()
-    
+
     @staticmethod
     def user_dict(user):
         '''Method for returning user details'''
@@ -79,7 +84,7 @@ class User(Base):
         if check_password_hash(user[3], password):
             return True
         return False
-    
+
     @staticmethod
     def generate_token(user):
         '''Method for generating a token upon login'''
@@ -89,13 +94,15 @@ class User(Base):
             'username': username,
             'exp': datetime.utcnow()+timedelta(minutes=6000),
             'iat': datetime.utcnow()}
-        token = jwt.encode(payload, str(current_app.config.get('SECRET')), algorithm='HS256')
+        token = jwt.encode(payload, str(
+            current_app.config.get('SECRET')), algorithm='HS256')
         return token.decode()
-    
+
     @staticmethod
     def decode_token(token):
         '''Method for decoding generated token'''
-        payload = jwt.decode(token, str(current_app.config.get('SECRET')), algorithms=['HS256'])
+        payload = jwt.decode(token, str(
+            current_app.config.get('SECRET')), algorithms=['HS256'])
         return payload
 
 
@@ -119,14 +126,15 @@ class Entry(Base):
             """,
             (self.user_id, self.title, self.description, self.created_at, self.last_modified))
         self.save()
-    
+
     @staticmethod
     def get(user_id, entry_id=None):
         '''Method for fetching both single and all entries'''
         if entry_id:
-            cur.execute("""SELECT * FROM entries WHERE user_id={} AND id={}""".format(user_id, entry_id))
+            cur.execute(
+                """SELECT * FROM entries WHERE user_id={} AND id={}""".format(user_id, entry_id))
             return cur.fetchone()
-        
+
         cur.execute(
             """SELECT
                 entries.id,
@@ -139,7 +147,22 @@ class Entry(Base):
         user_entries = cur.fetchall()
         return user_entries
 
-    @staticmethod  
+    @staticmethod
+    def verify_entries(title, description, user_id):
+        """Checks for duplication of an entry"""
+        sql = """SELECT entries.title, entries.description FROM entries
+                  WHERE user_id = {} and title = '{}' and description = '{}'
+               """.format(user_id, title, description)
+        try:
+            cur.execute(sql)
+            data = cur.fetchone()
+            if data:
+                return data
+            return "success"
+        except:
+            conn.rollback()
+
+    @staticmethod
     def entry_dict(entry):
         '''Method for returning entry details'''
         return dict(

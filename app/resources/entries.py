@@ -4,11 +4,14 @@ from flask_restful import Resource, reqparse
 from app.models import Entry
 from app.decorators import token_required, is_blank
 
+
 class EntryResource(Resource):
     '''Resource for diary entries'''
     parser = reqparse.RequestParser()
-    parser.add_argument('title', required = True, type=str, help='Title cannot be blank')
-    parser.add_argument('description', required = True, type=str, help='Description cannot be blank')
+    parser.add_argument('title', required=True, type=str,
+                        help='Title cannot be blank')
+    parser.add_argument('description', required=True,
+                        type=str, help='Description cannot be blank')
 
     @token_required
     def post(self, user_id):
@@ -19,11 +22,16 @@ class EntryResource(Resource):
 
         if is_blank(title) or is_blank(description):
             return {'message': 'All fields are required'}, 400
-        entry =  Entry(title=title, user_id=user_id, description=description)
-        entry.add()
-        entries = Entry.get(user_id=user_id)
-        return {'message': 'Entry has been published', 
-        'entry': [Entry.entry_dict(entry) for entry in entries]}, 201
+
+        data = Entry.verify_entries(title, description, user_id)
+        if data[0] != title or data[1] != description:
+            entry = Entry(title=title, user_id=user_id,
+                          description=description)
+            entry.add()
+            entries = Entry.get(user_id=user_id)
+            return {'message': 'Entry has been published',
+                    'entry': [Entry.entry_dict(entry) for entry in entries]}, 201
+        return {"message": "Please use a unique title or description"}, 400
 
     @token_required
     def get(self, user_id, entry_id=None):
@@ -40,11 +48,11 @@ class EntryResource(Resource):
         return {'message': 'Entries found', 'entries': [Entry.entry_dict(entry) for entry in user_entries]}, 200
 
     @token_required
-    def put(self,user_id, entry_id):
+    def put(self, user_id, entry_id):
         '''Method for modifying an entry'''
         entry = Entry.get(user_id=user_id, entry_id=entry_id)
         if not entry:
-            return {"message": "Entry does not exist"}, 404 
+            return {"message": "Entry does not exist"}, 404
         post_data = request.get_json()
         title = post_data.get('title', None)
         description = post_data.get('description', None)
@@ -53,18 +61,17 @@ class EntryResource(Resource):
             data.update({'title': title})
         if description:
             data.update({'description': description})
-        
-        Entry.update(table='entries',id=entry[0], data=data)
+
+        Entry.update(table='entries', id=entry[0], data=data)
         entry = Entry.get(user_id=user_id, entry_id=entry_id)
-        return {'message': 'Entry updated successfully', 
-        'new_entry': Entry.entry_dict(entry)}, 200
+        return {'message': 'Entry updated successfully',
+                'new_entry': Entry.entry_dict(entry)}, 200
 
     @token_required
     def delete(self, user_id, entry_id):
         '''Method for deleting an entry'''
         user_entry = Entry.get(user_id=user_id, entry_id=entry_id)
         if user_entry:
-            Entry.delete(table='entries',id=user_entry[0])
+            Entry.delete(table='entries', id=user_entry[0])
             return {"message": "Entry has been deleted"}, 200
-        return {"message": "Entry does not exist"}, 404 
-
+        return {"message": "Entry does not exist"}, 404
