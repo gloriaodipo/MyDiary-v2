@@ -29,5 +29,9 @@ def create_app(config_name):
 
     @app.errorhandler(404)
     def error_404(error):
-        return jsonify({"message": "page not found"}), 404
+        return jsonify({"message": "Page not found"}), 404
+
+    @app.errorhandler(500)
+    def error_500(error):
+        return jsonify({"message": "Ooop!!! There seems to be a problem with the server, we'll get back to you shortly."}), 404
     return app
