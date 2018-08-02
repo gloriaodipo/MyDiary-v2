@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_restful import Api
 from flask_cors import CORS
 
@@ -26,4 +26,8 @@ def create_app(config_name):
     @app.route("/")
     def index():
         return render_template("docs.html")
+
+    @app.errorhandler(404)
+    def error_404(error):
+        return jsonify({"message": "page not found"}), 404
     return app
