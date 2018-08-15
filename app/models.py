@@ -1,7 +1,6 @@
 import os
 import psycopg2
 import jwt
-import pprint as p
 from psycopg2 import connect
 from flask import current_app
 from datetime import datetime, timedelta
@@ -22,6 +21,7 @@ class Base():
 
     @staticmethod
     def get(table_name, **kwargs):
+        '''pass condition as keyword argument, just one'''
         for key, val in kwargs.items():
             sql = "SELECT * FROM {} WHERE {}='{}'".format(table_name, key, val)
             cur.execute(sql)
@@ -37,6 +37,8 @@ class Base():
 
     @staticmethod
     def update(table, id, data):
+        '''requires `table` as table name `id` as integer for pk and `data`
+        as a dictionary of new values {column_name: new_value}'''
         for key, val in data.items():
             string = "{}='{}'".format(key, val)
             sql = 'UPDATE {} SET {} WHERE id={}'.format(table, string, id)
@@ -70,7 +72,7 @@ class User(Base):
 
     @staticmethod
     def user_dict(user):
-        '''Method for returning user details'''
+        '''Method for returning user details as a dictionary'''
         return dict(
             id=user[0],
             username=user[1],
