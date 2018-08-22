@@ -150,14 +150,15 @@ class Entry(Base):
         return user_entries
 
     @staticmethod
-    def verify_entries(title, description, user_id):
+    def verify_entries(title, user_id):
         """Checks for duplication of an entry"""
         sql = """SELECT entries.title, entries.description FROM entries
-                  WHERE user_id = {} and title = '{}' and description = '{}'
-               """.format(user_id, title, description)
+                  WHERE user_id = {} and title = '{}'
+               """.format(user_id, title)
         try:
             cur.execute(sql)
             data = cur.fetchone()
+            print(data)
             if data:
                 return data
             return "success"

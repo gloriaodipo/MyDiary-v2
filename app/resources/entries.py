@@ -19,19 +19,18 @@ class EntryResource(Resource):
         args = EntryResource.parser.parse_args()
         title = args.get('title', '')
         description = args.get('description', '')
-
         if is_blank(title) or is_blank(description):
             return {'message': 'All fields are required'}, 400
-
-        data = Entry.verify_entries(title, description, user_id)
-        if data[0] != title or data[1] != description:
+        data = Entry.verify_entries(title, user_id)
+        print(data)
+        if data[0] != title:
             entry = Entry(title=title, user_id=user_id,
                           description=description)
             entry.add()
             entries = Entry.get(user_id=user_id)
             return {'message': 'Entry has been published',
                     'entry': [Entry.entry_dict(entry) for entry in entries]}, 201
-        return {"message": "Please use a unique title or description"}, 400
+        return {"message": "Please use a unique title"}, 400
 
     @token_required
     def get(self, user_id, entry_id=None):
