@@ -17,6 +17,7 @@ def token_required(func):
                 return func(user_id=user_id, *args, **kwargs)
             return {'message': "Please login first, your session might have expired"}, 401
         except Exception as e:
+            raise e
             return {'message': 'An error occured while decoding token.', 'error': str(e)}, 400
     return decorated
 

@@ -57,9 +57,9 @@ class EntryResource(Resource):
         description = post_data.get('description', None)
         data = {}
         if title:
-            data.update({'title': title})
+            data.update({'title': str(title)})
         if description:
-            data.update({'description': description})
+            data.update({'description': str(description)})
 
         Entry.update(table='entries', id=entry[0], data=data)
         entry = Entry.get(user_id=user_id, entry_id=entry_id)

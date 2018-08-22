@@ -39,6 +39,7 @@ class Base():
     def update(table, id, data):
         '''requires `table` as table name `id` as integer for pk and `data`
         as a dictionary of new values {column_name: new_value}'''
+
         for key, val in data.items():
             string = "{}='{}'".format(key, val)
             sql = 'UPDATE {} SET {} WHERE id={}'.format(table, string, id)
