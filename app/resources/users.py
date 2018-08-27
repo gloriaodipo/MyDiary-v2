@@ -40,7 +40,7 @@ class SignupResource(Resource):
 
         if username_exists or email_exists:
             return {'message': 'That username or email is taken.'}, 203
-        
+
         user = User(username=username, email=email, password=password)
         user.add()
         user= User.get('users', username=username)
@@ -65,9 +65,9 @@ class LoginResource(Resource):
 
         user = User.get("users", username=username)
         if not user:
-            return {"message": "User unavailable"}, 404
+            return {"message": "Username or password is wrong."}, 404
         if User.validate_password(username=user[1] ,password=password):
-            token = User.generate_token(user)    
+            token = User.generate_token(user)
             return {"message": "You are successfully logged in",
              "user": User.user_dict(user), "token":token}, 200
         return {"message": "Username or password is wrong."}, 401
