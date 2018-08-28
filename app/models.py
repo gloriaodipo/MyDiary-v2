@@ -146,7 +146,7 @@ class Entry(Base):
                 description,
                 created_at,
                 last_modified
-            FROM users INNER JOIN entries ON entries.user_id=users.id WHERE users.id={}""".format(user_id))
+            FROM users INNER JOIN entries ON entries.user_id=users.id WHERE users.id={} ORDER BY last_modified """.format(user_id))
         user_entries = cur.fetchall()
         return user_entries
 
@@ -174,6 +174,6 @@ class Entry(Base):
             user_id=entry[1],
             title=entry[2],
             description=entry[3],
-            created_at=entry[4].isoformat(),
-            last_modified=entry[5].isoformat()
+            created_at=entry[4].strftime("%Y-%m-%d"),
+            last_modified=entry[5].strftime("%Y-%m-%d")
         )
