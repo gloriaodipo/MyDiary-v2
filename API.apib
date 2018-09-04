@@ -1,0 +1,201 @@
+FORMAT: 1A
+HOST: https://mydiary-v2-app.herokuapp.com/
+
+# MyDiary
+
+MyDiary is an online journal where users can pen down their thoughts
+and feelings.
+
+## UserSignup Collection [/api/v1/user/signup]
+
+### Signup [POST]
+
++ Request (application/json)
+
+    {
+        "username":"Belinda", 
+        "email":"belinda@gmail.com",
+        "password":"mypassword"
+    }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /api/v1/user/signup
+
+    + Body
+
+        {
+            "message": "Successfully registered",
+            "user": {
+                "username": "Belinda",
+                "email": "belinda@gmail.com",
+                "id": 628
+            }
+        }
+
+## UserLogin Collection [/api/v1/user/login]
+
+### Login [POST]
+
++ Request (application/json)
+    
+    {
+        "username":"Belinda", 
+        "password":"mypassword"
+    }
+
++ Response 200 (application/json)
+
+    + Headers
+
+                Location: /api/v1/user/login
+
+    + Body
+
+            {
+                "message": "You are successfully logged in",
+                "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IkJlbGluZGEiLCJleHAiOjE1MzMwODA0OTIsInVzZXJfaWQiOjYyOCwiaWF0IjoxNTMyNzIwNDkyfQ.ltpVmfAOLwKGinrckYl_NZf8WaTh3B6jI6HdagfDeRQ",
+                "user": {
+                    "username": "Belinda",
+                    "email": "belinda@gmail.com",
+                    "id": 628
+                }
+            }
+
+## Entry Creation Collection [/api/v1/user/entries]
+
+### Add Entry [POST]
+
++ Request  (application/json)
+
+        {
+            "title" : "My demo",
+            "description" : "This is for demonstration"
+        }
+
++ Headers
+
+            Location: /api/v1/user/entries
+
++ Response 201 (application/json)
+
+    + Headers
+
+                Location: /api/va/user/entries
+
+    + Body
+
+            {
+                "message": "Entry has been published",
+                "entry": [
+                    {
+                        "created_at": "2018-07-27T19:43:42.427841",
+                        "last_modified": "2018-07-27T19:43:42.427864",
+                        "title": "My demo",
+                        "user_id": 628,
+                        "description": "This is for demonstration",
+                        "id": 164
+                    }
+                ]
+            }
+
+## Get One Entry Collection [/api/v1/user/entries/164]
+
+### Get Entry [GET]
+
++ Response 200 (application/json)
+
+        {
+            "message": "Entry found",
+            "entry": {
+                "created_at": "2018-07-27T19:43:42.427841",
+                "last_modified": "2018-07-27T19:43:42.427864",
+                "title": "My demo",
+                "user_id": 628,
+                "description": "This is for demonstration",
+                "id": 164
+            }
+        }
+          
+## Get All Entries Collection [/api/v1/user/entries]
+
+### Get Entries [GET]
+
++ Response 200 (application/json)
+
+        {
+        "message": "Entries found",
+        "entries": [
+            {
+                "created_at": "2018-07-27T19:43:42.427841",
+                "last_modified": "2018-07-27T19:43:42.427864",
+                "title": "My demo",
+                "user_id": 628,
+                "description": "This is for demonstration",
+                "id": 164
+            },
+            {
+                "created_at": "2018-07-27T19:54:14.774072",
+                "last_modified": "2018-07-27T19:54:14.774107",
+                "title": "The day was lovely",
+                "user_id": 628,
+                "description": "I enjoyed every activity i undertook today",
+                "id": 165
+            },
+            {
+                "created_at": "2018-07-27T19:54:51.365076",
+                "last_modified": "2018-07-27T19:54:51.365103",
+                "title": "Code",
+                "user_id": 628,
+                "description": "I enjoy coding with music",
+                "id": 166
+            }
+        ]
+    }        
+
+## Modify Entry Collection [/api/v1/user/entries/165]
+
+### Modify Entry [PUT]
+
++ Request  (application/json)
+
+        {
+            "title" : "My demo",
+            "description" : "This is for demonstration"
+        }
+
++ Headers
+
+            Location: /api/v1/user/entries/165
+
++ Response 201 (application/json)
+
+    + Headers
+
+                Location: /api/va/user/entries
+
+    + Body
+
+            {
+                "message": "Entry updated successfully",
+                "new_entry": {
+                    "created_at": "2018-07-27T19:54:14.774072",
+                    "last_modified": "2018-07-27T19:54:14.774107",
+                    "title": "The day was lovely",
+                    "user_id": 628,
+                    "description": "Oh what a day it was",
+                    "id": 165
+                }
+            }
+
+## Delete Entry Collection [/api/v1/user/entries/166]
+
+### Delete Entry [DELETE]
+
++ Response 200 (application/json)
+
+        {
+            "message": "Entry has been deleted"
+        }      
